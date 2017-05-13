@@ -3,6 +3,11 @@ namespace Blogger\BlogBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+use Blogger\BlogBundle\Entity\Enquiry;
+use Blogger\BlogBundle\Form\EnquiryType;
 
 class PageController extends Controller
 {
@@ -30,8 +35,26 @@ class PageController extends Controller
      * @Route("/contact", name="blog_contact")
      * @return [type] [description]
      */
-    public function contactAction()
+    public function contactAction(Request $request)
     {
-        return $this->render('BloggerBlogBundle:Page:contact.html.twig');
+        $enquiry = new Enquiry();
+        $form = $this->createForm(EnquiryType::class, $enquiry);
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                // Perform some action, such as sending an email
+
+                // Redirect - This is important to prevent users re-posting
+                // the form if they refresh the page
+                return $this->redirect($this->generateUrl('blog_contact'));
+            }
+        }
+
+        return $this->render('BloggerBlogBundle:Page:contact.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 }
