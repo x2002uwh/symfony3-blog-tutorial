@@ -2,19 +2,41 @@
 
 namespace Blogger\BlogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Enquiry
  */
 class Enquiry
 {
+    /**
+      * @Assert\NotBlank()
+      */
     private $name;
 
+    /**
+     * @Assert\Email(
+     *     message = "symblog does not like invalid emails. Give me a real one!",
+     *     checkMX = true
+     * )
+     */
     private $email;
 
+    /**
+      * @Assert\NotBlank()
+      * @Assert\Length(
+      *      max = 50,
+      *      maxMessage = "The subject cannot be longer than {{ limit }} characters"
+      * )
+      */
     private $subject;
 
+    /**
+     * @Assert\Length(
+     *      min = 50,
+     *      minMessage = "The body must be at least {{ limit }} characters long"
+     * )
+    */
     private $body;
 
     public function setName($name)
