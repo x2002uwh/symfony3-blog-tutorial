@@ -1,0 +1,79 @@
+<?php
+
+namespace Blogger\BlogBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * Blog
+ *
+ * @ORM\Table(name="blog")
+ * @ORM\Entity(repositoryClass="Blogger\BlogBundle\Repository\BlogRepository")
+ */
+class Blog
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $author;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $blog;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $tags;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Blogger\BlogBundle\Entity\Comment", mappedBy="blog")
+     */
+    private $comments;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated_at;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
