@@ -57,4 +57,24 @@ class PageController extends Controller
             'form' => $form->createView()
         ));
     }
+
+    /**
+     * Show a blog entry
+     * @Route("/{id}", name="show_blog")
+     * @return [type] [description]
+     */
+    public function showBlogAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $blog = $em->getRepository('BloggerBlogBundle:Blog')->find($id);
+
+        if (!$blog) {
+            throw $this->createNotFoundException('Unable to find Blog post.');
+        }
+
+        return $this->render('BloggerBlogBundle:Blog:show.html.twig', array(
+            'blog' => $blog
+        ));
+    }
 }
